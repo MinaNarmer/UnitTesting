@@ -8,7 +8,7 @@ namespace Library.API.Data.Services
     public class BookService : IBookService
     {
 
-        private  List<Book> _books;
+        private List<Book> _books;
 
 
         public BookService()
@@ -31,7 +31,7 @@ namespace Library.API.Data.Services
 
         public IEnumerable<Book> GetAll()
         {
-            return _books ;
+            return _books;
         }
 
         public Book GetById(Guid id)
@@ -41,7 +41,9 @@ namespace Library.API.Data.Services
 
         public void Remove(Guid id)
         {
-            throw new NotImplementedException();
+            var book = _books.FirstOrDefault(X => X.Id == id);
+            _books.Remove(book);
+
         }
     }
 }

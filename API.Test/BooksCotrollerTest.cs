@@ -4,6 +4,7 @@ using Library.API.Data.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace API.Test
@@ -68,18 +69,17 @@ namespace API.Test
         {
             //arrange
 
-            var inCompleteBook = new Book()
-            {
-                Id = Guid.NewGuid(),   
-                Author =   "Author",
+            //var inCompleteBook = new Book()
+            //{
+            //   Id = Guid.NewGuid(),   
+            //   Author =   "Author",
+            //};
+            ////// act
+            //_controller.ModelState.AddModelError("Title","Title Required");
+            //var badResponse = _controller.Post(inCompleteBook);
 
-            };
-            // act
-            _controller.ModelState.AddModelError("Title","Title Required");
-            var badResponse = _controller.Post(inCompleteBook);
-
-            //assert
-            Assert.IsType<BadRequestObjectResult>(badResponse);
+            //////assert
+            //Assert.IsType<BadRequestObjectResult>(badResponse);
 
             //arrange
 
@@ -103,6 +103,36 @@ namespace API.Test
 
             var bookItem = item.Value as Book;
             Assert.Equal(completeBook.Author,bookItem.Author);
+
+        }
+
+        [Theory]
+        [InlineData("0f8fad5b-d9cb-469f-a165-70867728950e", "0f8fad5b-d9cb-469f-a165-70867728950a")]
+        public void RemoveById(string guid1, string guid2)
+        {
+            //arrange
+
+            var validGuid = new Guid(guid1);
+            var validGuid2 = new Guid(guid2);
+
+            //act
+            var notFoundResult = _controller.Remove(validGuid2);
+
+
+            //assert
+
+            Assert.IsType<NotFoundResult>(notFoundResult);
+            Assert.Equal(5,_bookService.GetAll().Count());
+
+            //act 
+            var okResult = _controller.Remove(validGuid);
+
+            //assert
+            Assert.IsType<OkResult>(okResult);
+            Assert.Equal(4, _bookService.GetAll().Count());
+
+
+
 
         }
     }

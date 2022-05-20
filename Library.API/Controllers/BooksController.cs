@@ -53,7 +53,7 @@ namespace Library.API.Controllers
         public ActionResult Remove(Guid id)
         {
             var existingItem = _bookService.GetById(id);
-            if (existingItem == null) { return BadRequest(ModelState); }
+            if (existingItem == null) { return NotFound(); }
             _bookService.Remove(id);
             return Ok();
 
