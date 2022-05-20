@@ -8,7 +8,7 @@ namespace Library.API.Data.Services
     public class BookService : IBookService
     {
 
-        private readonly List<Book> _books;
+        private  List<Book> _books;
 
 
         public BookService()
@@ -25,7 +25,8 @@ namespace Library.API.Data.Services
         }
         public Book Add(Book book)
         {
-            throw new NotImplementedException();
+            _books.Add(book);
+            return book;
         }
 
         public IEnumerable<Book> GetAll()

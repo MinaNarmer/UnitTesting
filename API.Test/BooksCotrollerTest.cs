@@ -60,5 +60,50 @@ namespace API.Test
             var book = item.Value as Book;
             Assert.Equal(validGuid, book.Id);
         }
+
+
+        [Fact]
+
+        public void AddBookTest()
+        {
+            //arrange
+
+            var inCompleteBook = new Book()
+            {
+                Id = Guid.NewGuid(),   
+                Author =   "Author",
+
+            };
+            // act
+            _controller.ModelState.AddModelError("Title","Title Required");
+            var badResponse = _controller.Post(inCompleteBook);
+
+            //assert
+            Assert.IsType<BadRequestObjectResult>(badResponse);
+
+            //arrange
+
+            var completeBook = new Book()
+            {
+                Id = Guid.NewGuid(),
+                Author = "Author",
+                Title ="Mina"
+
+            };
+            // act
+            var completeResponse = _controller.Post(completeBook);
+
+            //assert
+
+            Assert.IsType<CreatedAtActionResult>(completeResponse);
+
+            var item = completeResponse as CreatedAtActionResult;
+
+            Assert.IsType<Book>(item.Value);
+
+            var bookItem = item.Value as Book;
+            Assert.Equal(completeBook.Author,bookItem.Author);
+
+        }
     }
 }
